@@ -1,5 +1,4 @@
-#ifndef USERINFO_H
-#define USERINFO_H
+#pragma once
 #include <QtNetwork>
 
 
@@ -33,4 +32,4 @@ struct UserInfo {
     }
 };
 
-#endif // USERINFO_H
+

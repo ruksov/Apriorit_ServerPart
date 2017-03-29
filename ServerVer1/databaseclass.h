@@ -1,5 +1,5 @@
-#ifndef DATABASECLASS_H
-#define DATABASECLASS_H
+#pragma once
+
 #include <QtSql>
 #include <QDebug>
 #include "userinfo.h"
@@ -23,4 +23,4 @@ public:
     void FillMapUsername(QMap<QString, UserInfo>& map);
 };
 
-#endif // DATABASECLASS_H
+

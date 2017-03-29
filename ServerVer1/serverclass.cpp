@@ -43,7 +43,7 @@ void ServerClass::ReadClientREG_LOG(QDataStream &in, QTcpSocket* pClientSocket, 
         in>>StructUI;
     in>>strMsg;
 
-    //Запись в strUsername и strPassword значения
+
     int i = 0;
     while(strMsg[i] != '.')
     {
@@ -57,14 +57,14 @@ void ServerClass::ReadClientREG_LOG(QDataStream &in, QTcpSocket* pClientSocket, 
     {
         StructUI.pClientSocket = pClientSocket;
 
-        //Проверяем не занято ли имя
+
         if(this->m_dbManager.isUsernameBusy(strUsername))
         {
             this->SendToClient(pClientSocket, REG_ERROR, NULL);
             return;
         }
 
-        //Записываем в БД
+
         this->m_dbManager.WriteToDataBase(strUsername, strPassword, StructUI);
 
 
@@ -73,14 +73,14 @@ void ServerClass::ReadClientREG_LOG(QDataStream &in, QTcpSocket* pClientSocket, 
     }
     else if(typeMsg == LOGIN)
     {
-        //Проверяем правильность логина и пароля
+
         if(!this->m_dbManager.isCorrectLogin(strUsername, strPassword))
         {
             this->SendToClient(pClientSocket, LOG_ERROR, NULL);
             return;
         }
 
-        //Создаем копию структуры хранящейся по этому логину
+
         StructUI = this->m_mapClients.value(strUsername);
         StructUI.pClientSocket = pClientSocket;
 
@@ -88,10 +88,10 @@ void ServerClass::ReadClientREG_LOG(QDataStream &in, QTcpSocket* pClientSocket, 
         this->m_ptxtInfo->append("Client "+strUsername+"login to the server");
     }
 
-    //Вставляем в карту логин и структуру
+
     this->m_mapClients.insert(strUsername, StructUI);
 
-    //Массив байтов для записи нашего сообщения
+
     QByteArray arrBlock;
     QDataStream out(&arrBlock, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_DefaultCompiledVersion);
@@ -102,18 +102,18 @@ void ServerClass::ReadClientREG_LOG(QDataStream &in, QTcpSocket* pClientSocket, 
     {
         if(currUsername == strUsername)
         {
-            //Записываем сообщение для клиента, который регестрируется или логинится
+
             arrBlock.clear();
             out.device()->reset();
             out<<this->m_mapClients;
             this->SendToClient(pClientSocket, OK, arrBlock);
 
-            //Записываем сообщение для клиентов, которые должны получить update карты
+
             arrBlock.clear();
             out.device()->reset();
             out<<qMakePair(strUsername, StructUI);
         }
-        else if(this->m_mapClients.value(currUsername).pClientSocket) //если есть связь с клиентом в карте
+        else if(this->m_mapClients.value(currUsername).pClientSocket)
         {
             this->SendToClient(this->m_mapClients.value(currUsername).pClientSocket, UPDATE, arrBlock);
         }

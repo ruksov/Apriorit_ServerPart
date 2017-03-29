@@ -1,5 +1,4 @@
-#ifndef DIALOG_H
-#define DIALOG_H
+#pragma once
 
 #include <QDialog>
 #include "serverclass.h"
@@ -21,4 +20,3 @@ private:
     ServerClass m_server;
 };
 
-#endif // DIALOG_H

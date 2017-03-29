@@ -1,5 +1,4 @@
-#ifndef SERVERCLASS_H
-#define SERVERCLASS_H
+#pragma once
 
 #include <QObject>
 #include <QtNetwork>
@@ -7,6 +6,8 @@
 #include "userinfo.h"
 #include "databaseclass.h"
 #include "emessagetype.h"
+
+
 
 class ServerClass : public QObject
 {
@@ -19,11 +20,11 @@ private:
     QTextBrowser* m_ptxtInfo;
     quint16 m_nNextBlockSize;
 
-    //Чтение сообщения клиента в зависимости от метки
+
     void ReadClientREG_LOG(QDataStream& in, QTcpSocket* pClientSocket,const MsgType& typeMsg);
     void ReadClientMESSAGE(QDataStream& in);
 
-    //Отправка сообщения клиенту
+
     void SendToClient(QTcpSocket* pClientSocket, const MsgType& type, const QByteArray& arrBlockMsg);
 
 public:
@@ -39,4 +40,4 @@ public slots:
     void slotReadClient();
 };
 
-#endif // SERVERCLASS_H
+

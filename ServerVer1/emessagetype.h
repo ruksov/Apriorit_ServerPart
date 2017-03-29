@@ -1,5 +1,4 @@
-#ifndef EMESSAGETYPE_H
-#define EMESSAGETYPE_H
+#pragma once
 enum MsgType
 {
     REG,
@@ -11,4 +10,4 @@ enum MsgType
     REG_ERROR
 };
 
-#endif // EMESSAGETYPE_H
+
