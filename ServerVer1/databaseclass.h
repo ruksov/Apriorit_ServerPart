@@ -1,9 +1,6 @@
 #pragma once
+#include "stdafx.h"
 
-#include <QtSql>
-#include <QDebug>
-#include "userinfo.h"
-#include <memory>
 
 class DataBaseClass
 {

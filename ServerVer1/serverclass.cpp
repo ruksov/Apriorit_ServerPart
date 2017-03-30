@@ -198,6 +198,7 @@ void ServerClass::slotNewConnection()
 {
     QTcpSocket* pClientSocket = this->m_pTcpServer->nextPendingConnection();
 
+    connect(pClientSocket, SIGNAL(disconnected()), SLOT(slotDissconnectClient()));
     connect(pClientSocket, SIGNAL(disconnected()), pClientSocket, SLOT(deleteLater()));
     connect(pClientSocket, SIGNAL(readyRead()), SLOT(slotReadClient()));
     qDebug()<<"Client connect to Server";
@@ -234,4 +235,33 @@ void ServerClass::slotReadClient()
     }
 }
 
+
+void ServerClass::slotDissconnectClient()
+{
+    shared_ptr<QTcpSocket> pClientSocket(static_cast<QTcpSocket*>(sender()));
+
+    QMap<QString,UserInfo>::iterator it;
+
+    for(it = m_mapClients.begin(); it != m_mapClients.end(); ++it)
+    {
+        if(it.value().pClientSocket == pClientSocket.get())
+        {
+            break;
+        }
+    }
+
+    it.value().pClientSocket = nullptr;
+
+    QByteArray arrBlock;
+    QDataStream out(&arrBlock, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_DefaultCompiledVersion);
+
+    out<<qMakePair(it.key(),it.value());
+
+    for(it = m_mapClients.begin();it!= m_mapClients.end();++it)
+    {
+        if(it.value().pClientSocket != pClientSocket.get())
+            SendToClient(it.value().pClientSocket, UPDATE, arrBlock);
+    }
+}
 

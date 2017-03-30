@@ -7,7 +7,8 @@ enum MsgType
     OK,
     LOG_ERROR,
     UPDATE,
-    REG_ERROR
+    REG_ERROR,
+    DISSCONNECT
 };
 
 

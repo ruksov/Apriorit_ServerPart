@@ -1,11 +1,8 @@
 #pragma once
 
-#include <QObject>
-#include <QtNetwork>
-#include <QTextBrowser>
-#include "userinfo.h"
-#include "databaseclass.h"
-#include "emessagetype.h"
+#include "stdafx.h"
+
+
 
 
 
@@ -38,6 +35,7 @@ public:
 public slots:
     void slotNewConnection();
     void slotReadClient();
+    void slotDissconnectClient();
 };
 
 
